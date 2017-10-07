@@ -53,7 +53,7 @@ def process(raw):
                 entry = { }
             entry['topic'] = ""
             entry['project'] = "" 
-            entry['week'] = content +  "\n Start date: {}".format(base.date().isoformat()) 
+            entry['week'] = content +  "\n {}".format(base.date().isoformat()) 
     
             #Find which week need to been highlight
 

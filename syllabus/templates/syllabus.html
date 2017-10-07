@@ -12,17 +12,22 @@
 <h1>Schedule</h1>
 
 <table class="class-schedule">
+
   {% for entry in g.schedule %}
-
-  {% if entry.highlight %}
   
-  <tr class="highlight_back">
 
 
-  {% elif loop.index is divisibleby 2 %}
+  {% if loop.index is divisibleby 2 %}
   <tr class="even">
+  {% if entry.highlight %}
+  <tr class="highlight_back">
+  {% endif %}
+
   {% else %}
   <tr class="odd">
+  {% if entry.highlight %}
+  <tr class="highlight_back">
+  {% endif %}
   {% endif %}	   
     <td class="week">{{ entry.week }}</td>
     <td class="topic">{{ entry.topic }}</td>
