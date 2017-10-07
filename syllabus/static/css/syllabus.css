@@ -30,6 +30,10 @@ tr.even {
     background-color: rgb(224,213,179);
 }
 
+tr.highlight_back {
+    backgroud-color: rgb(0,153,0);
+}
+
 .class-schedule .week {
     
     font-weight: bolder;

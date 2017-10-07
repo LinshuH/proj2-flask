@@ -20,7 +20,7 @@ def process(raw):
     field = None
     entry = { }
     cooked = [ ] 
-    nth_week = 0
+    
     for line in raw:
         log.debug("Line: {}".format(line))
         line = line.strip()  # Line is every line in the txt file(raw)
@@ -46,9 +46,6 @@ def process(raw):
             except:
                 raise ValueError("Unable to parse date {}".format(content))
 
-        
-        #base = base
-        
         elif field == "week":
 	 
             if entry:
@@ -56,8 +53,23 @@ def process(raw):
                 entry = { }
             entry['topic'] = ""
             entry['project'] = "" 
-            #entry['week'] = content +  "\n Start date: {}".format(base.isoformat()) 
-            # arrow get the start date based on the begin date, start day of each week equal to begin day plus the week number - 1
+            entry['week'] = content +  "\n Start date: {}".format(base.date().isoformat()) 
+    
+            #Find which week need to been highlight
+
+            today = arrow.now('US/Pacific')      
+            week_start = base
+            week_end = week_start.shift(weeks=+1)
+
+            if (today >= week_start) and (today < week_end):
+                #this week need to be highlight
+                entry['highlight'] = True
+            else:            
+                entry['hightlight'] = False
+
+            base = base.replace(days=+7)
+
+            # a new key in entry dictionary, the value is either true or false, if the answer is ture, tne high light. 
 	   
         elif field == 'topic' or field == 'project':
             entry[field] = content
@@ -65,17 +77,9 @@ def process(raw):
         else:
             raise ValueError("Syntax error in line: {}".format(line))
        
-        # First get the today date, then substract with beginning date to find difference of date. The difference/7 + 1 is the number of week.
-        today = arrow.now('US/Pacific')      
-        #week_start = base
-        #week_end = week_start.shift(weeks=+1)
-        """
-	if (today >= week_start) and (today < week_end):
-            #this week need to be highlight
-            print("The beginning of this week is: {}".format(week_start.date().isoformat())
-	"""          
-	# a new key in entry dictionary, the value is either true or false, if the answer is ture, tne high light. 
-        nth_week += 1
+        
+
+
 
     if entry:
         cooked.append(entry)
